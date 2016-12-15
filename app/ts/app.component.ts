@@ -5,21 +5,31 @@ import { HowMany } from './how-many.component';
 import { WebWorkerService } from './webworker.service';
 import { Observable } from 'rxjs/Observable';
 
-@Component({
+/*@Component({
   selector: 'my-app',
   template:`<div><how-many [i_counter]="counter"></how-many></div>
             <h1>Counter :{{counter}}</h1>
+            <input id="proba"/>
           `,  
-  providers: [ NumberService ]
+  providers: [ NumberService, WebWorkerService ]
+})*/
+
+@Component({
+  selector: 'my-app',
+  template:`
+        <proba></proba>
+          `,  
+  providers: [ NumberService, WebWorkerService ]
 })
 export class AppComponent implements OnInit, OnChanges{
 
-  @Input() counter: Observable<number>;
-  public webWorkerService: WebWorkerService;
+  private counter: number;
   
-  constructor(private numberGeneratorService: NumberService, private ngZone: NgZone)      
+  constructor(private numberGeneratorService: NumberService, 
+              private ngZone: NgZone,
+              private webWorkerService: WebWorkerService)      
   {
-    this.webWorkerService=new WebWorkerService();
+   
   }
 
   ngOnInit(){    
@@ -32,6 +42,8 @@ export class AppComponent implements OnInit, OnChanges{
           this.ngZone.run(()=>this.counter=val); 
           console.log(this.counter);
         });
+
+        //this.webWorkerService.numberGeneratedObservable.subscribe((val)=>console.log("From observable :"+ val));
 
         this.webWorkerService.getRandomNumbers(50000);                   
   }

@@ -1,3 +1,4 @@
+/// <reference path="../../node_modules/@angular/common/index.d.ts" />
 import { Injectable, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 @Injectable()

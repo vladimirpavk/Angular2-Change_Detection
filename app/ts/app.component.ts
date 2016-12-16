@@ -1,52 +1,45 @@
 /// <reference path="../../node_modules/@angular/common/index.d.ts" />
+
 import { Component, OnInit, OnChanges, NgZone, Input } from '@angular/core';
 import { NumberService } from './number.service';
 import { HowMany } from './how-many.component';
-import { WebWorkerService } from './webworker.service';
+//import { WebWorkerService } from './webworker.service'; --old web-worker
+import { WebWorkerService } from './web-worker/web-worker.service';
 import { Observable } from 'rxjs/Observable';
 
-/*@Component({
+@Component({
   selector: 'my-app',
   template:`<div><how-many [i_counter]="counter"></how-many></div>
             <h1>Counter :{{counter}}</h1>
             <input id="proba"/>
           `,  
   providers: [ NumberService, WebWorkerService ]
-})*/
-
-@Component({
-  selector: 'my-app',
-  template:`
-        <proba></proba>
-          `,  
-  providers: [ NumberService, WebWorkerService ]
 })
 export class AppComponent implements OnInit, OnChanges{
 
-  private counter: number;
-  
-  constructor(private numberGeneratorService: NumberService, 
-              private ngZone: NgZone,
-              private webWorkerService: WebWorkerService)      
+  private counter: number = 0;  
+
+  constructor(private numberGeneratorService: NumberService,               
+              private webWorkerService: WebWorkerService,
+              private ngZone: NgZone)      
   {
-   
+      
   }
 
-  ngOnInit(){    
-      this.numberGeneratorService.numberGenerated.subscribe((val)=>{
-        this.counter=val;
-      });
-      //this.numberGeneratorService.generateNumbers();
-
-      this.webWorkerService.numberGenerated.subscribe((val)=>{          
-          this.ngZone.run(()=>this.counter=val); 
-          console.log(this.counter);
-        });
-
-        //this.webWorkerService.numberGeneratedObservable.subscribe((val)=>console.log("From observable :"+ val));
-
-        this.webWorkerService.getRandomNumbers(50000);                   
+  ngOnInit(){  
+        const input = 100;
+        const promise = this.webWorkerService.run(input2=>input2*100, input);
+        promise.then(
+          result=>{
+            console.log(result);
+            this.counter=result;
+          }
+        ).catch(result=>{               
+            console.log(result);           
+          });                
   }
+  
+
   ngOnChanges(){
     console.log("View changed");
   }

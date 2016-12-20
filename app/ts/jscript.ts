@@ -1,8 +1,12 @@
 function generateRandomNumber() {
-    return parseInt(Math.random() * 100);
+    var number=parseInt(Math.random() * 100);
+    //console.log("From generateRandomNumber :"+number);
+    return number;
 }
 this.onmessage = function (val) {
     for (var x = 0; x < val.data; x++) {
-         postMessage(generateRandomNumber());
+         var number2=generateRandomNumber();
+         //console.log("form onmessage :"+number2);
+         postMessage(number2);         
     }
 };

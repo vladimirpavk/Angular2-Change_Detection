@@ -24,9 +24,11 @@ export class AppComponent implements OnInit, OnChanges{
       
   }
 
+  private _webWorker: Worker;
+
   ngOnInit(){  
 
-    this.webWorkerService.numberGenerated.subscribe((value)=>{  
+   /* this.webWorkerService.numberGenerated.subscribe((value)=>{  
       this.ngZone.run(()=>this.counter=value);
       console.log("Counter value :"+this.counter);
     });
@@ -35,7 +37,15 @@ export class AppComponent implements OnInit, OnChanges{
     this.numberGeneratorService.numberGenerated.subscribe((val)=>{
         this.counter=val;
     });
-    //this.numberGeneratorService.generateNumbers();
+    //this.numberGeneratorService.generateNumbers();*/
+
+    this._webWorker=new Worker('./app/js/jscript.js');        
+    this._webWorker.addEventListener('message', (val)=>{
+      console.log(val.data);
+      this.ngZone.run(()=>this.counter=val.data);
+    });
+
+    this._webWorker.postMessage(103300);
   
   }
   

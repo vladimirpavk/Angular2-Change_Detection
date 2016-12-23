@@ -14,6 +14,6 @@ export class NumberService{
             console.log(num);
             this.numberGenerated.emit(num);
         }
-        ,1000);        
+        ,100);        
     }
 }

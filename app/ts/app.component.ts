@@ -38,14 +38,19 @@ export class AppComponent implements OnInit, OnChanges{
         this.counter=val;
     });
     //this.numberGeneratorService.generateNumbers();*/
+    var blobURL = URL.createObjectURL(new Blob([
+        "onmessage = function (val) { for (var x = 0; x < val.data; x++) { postMessage( Math.random() ) } };"                             
+      ], { type: 'application/javascript' }));
+    console.log(blobURL);
 
-    this._webWorker=new Worker('./app/js/jscript.js');        
+    this._webWorker=new Worker(blobURL); 
+
     this._webWorker.addEventListener('message', (val)=>{
       console.log(val.data);
       this.ngZone.run(()=>this.counter=val.data);
     });
 
-    this._webWorker.postMessage(103300);
+    this._webWorker.postMessage(100);
   
   }
   

@@ -24,12 +24,7 @@ export class WebWorkerService{
                     console.log("From WebWorker :"+this._percent_done);
                     this.numberGenerated.emit(this._percent_done);
                 }          
-            });
-           
-           /* this._webWorker.onmessage=((val)=>{
-               
-            });*/       
-                     
+            });           
     }
 
     public getRandomNumbers(count: number): any{
